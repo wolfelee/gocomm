@@ -1,0 +1,55 @@
+mq:
+  ucenter:
+    dsn: amqp://xxx:xxxx@172.16.0.71:5672/ucenter
+    reconnect_delay: 5s
+    consumers:
+      - name: pwdnotify
+        queue: user.create.pwdnotify
+        workers: 1
+        prefetch_count: 0
+        prefetch_size: 0
+        options:
+          no_ack: false
+          no_local: false
+          no_wait: false
+          exclusive: false
+  sms:
+    dsn: amqp://xxx:xxxx@172.16.0.71:5672/sms
+    reconnect_delay: 5s
+    producers:
+      - name: sms-send
+        exchange: sms.topic
+        routing_key: sms.send
+        buffer_size: 10
+        options:
+          content_type: application/json
+          delivery_mode: 2
+
+/*
+  Use("default").SetConsumerHandler("regsendcoupon", func(ctx *Context) {
+  		t.Log(string(ctx.GetBody()))
+  		t.Log(ctx.GetMsgId())
+  		time.Sleep(10 * time.Millisecond)
+  		ctx.Ack()
+  })
+
+  func ConsumerHandler(ctx *Context)
+  调用
+  ctx.GetBody
+  ctx.GetMsgId
+  ctx.Ack
+}
+
+route := fmt.Sprintf("user.create.%d.%s", source, flag)
+p, err := mqueue.Use("ucenter").GetProducer("useropt")
+if err != nil {
+	log.Error(fmt.Sprintf("send reg mq:%s",err))
+	return false
+}
+data := mqueue.PublicData{
+			Message:[]byte("ssssss"),
+			RouteKey: "",  //使用默认路由键的话该值使用  ""
+			Delay: 333, //延迟时间，单位s
+		}
+		p.Produce(data)
+*/

@@ -1,0 +1,22 @@
+mq:
+  default:
+    dsn: 172.16.0.220:5672/jiandan
+    ali: false
+    ak: admin
+    sk: adminnn
+    aliInstanceId:
+    reconnect_delay: 5s
+    producers:
+      -   name: testmq
+          exchange: testmq
+          routing_key: testmque
+          buffer_size: 10
+          options:
+            content_type: application/json
+            delivery_mode: 2
+    consumers:
+      - name: testmq
+        queue: testmque
+        workers: 1
+
+
